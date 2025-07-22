@@ -23,6 +23,14 @@ if (!fs.existsSync(uploadsDir)) {
 
 // Middleware
 app.use(cors());
+const cors = require('cors');
+
+app.use(cors());
+
+ app.use(cors({
+   origin: 'http://localhost:5000'  //to be changed later to vercel url
+ }));
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
