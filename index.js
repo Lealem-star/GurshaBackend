@@ -28,7 +28,7 @@ const cors = require('cors');
 app.use(cors());
 
  app.use(cors({
-   origin: 'http://gursha-backend.vercel.app'  //to be changed later to vercel url
+   origin: 'http://gursha-frontend.vercel.app'  //to be changed later to vercel url
  }));
 
 app.use(express.json({ limit: '10mb' }));
