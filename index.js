@@ -57,7 +57,10 @@ app.use('/api', gameRoutes);
 app.use('/api', participantRoutes);
 app.use('/api', prizeRoutes);
 
+// Export the app as a serverless function
+module.exports = app;
+
 // Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Server is running on http://localhost:${PORT}`);
+// });
