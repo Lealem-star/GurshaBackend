@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5000;
  app.use(cors({
   origin: 'https://gursha-frontend.vercel.app', // Ensure to use HTTPS if your frontend uses it
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
-  // credentials: true // Allow credentials if needed
+  credentials: true // Allow credentials if needed
  }));
 
 // Create uploads directory if it doesn't exist
