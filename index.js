@@ -50,6 +50,9 @@ connectDB().then(() => {
 });
 
 // Use routes
+app.get('/', (req, res) => {
+  res.send('Hello World')
+});
 app.use('/api/auth', authRoutes);
 app.use('/api/', adminRoutes);
 app.use('/api', userRoutes);
