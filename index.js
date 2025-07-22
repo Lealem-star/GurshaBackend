@@ -22,8 +22,6 @@ if (!fs.existsSync(uploadsDir)) {
 }
 
 // Middleware
-app.use(cors());
-
  app.use(cors({
    origin: 'http://gursha-frontend.vercel.app'  //to be changed later to vercel url
  }));
