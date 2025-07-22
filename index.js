@@ -23,7 +23,9 @@ if (!fs.existsSync(uploadsDir)) {
 
 // Middleware
  app.use(cors({
-   origin: 'http://gursha-frontend.vercel.app'  //to be changed later to vercel url
+  origin: 'https://gursha-frontend.vercel.app', // Ensure to use HTTPS if your frontend uses it
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
+  credentials: true // Allow credentials if needed
  }));
 
 app.use(express.json({ limit: '10mb' }));
