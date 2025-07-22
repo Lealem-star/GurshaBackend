@@ -14,12 +14,14 @@ const { createAdminUser } = require('./scripts/createAdmin');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+
 // Middleware
- app.use(cors({
-  origin: 'https://gursha-frontend.vercel.app', // Ensure to use HTTPS if your frontend uses it
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
-  credentials: true // Allow credentials if needed
- }));
+const allowedOrigins = ['https://gursha-frontend.vercel.app'];
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Adjust as needed
+  credentials: true // Include this if you need to send cookies or authorization headers
+}));
 
 // Create uploads directory if it doesn't exist
 const uploadsDir = path.join(__dirname, 'uploads');
