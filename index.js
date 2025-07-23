@@ -30,6 +30,11 @@ if (!fs.existsSync(uploadsDir)) {
     console.log('📁 Created uploads directory');
 }
 
+// Middleware
+ app.use(cors({
+   origin: 'http://localhost:5000'  //to be changed later to vercel url
+ }));
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
