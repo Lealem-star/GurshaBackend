@@ -18,9 +18,9 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 const allowedOrigins = ['https://gursha-frontend.vercel.app'];
 app.use(cors({
-  origin: allowedOrigins,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Adjust as needed
-  credentials: true // Include this if you need to send cookies or authorization headers
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Adjust as needed
+    credentials: true // Include this if you need to send cookies or authorization headers
 }));
 
 // Create uploads directory if it doesn't exist
@@ -30,10 +30,8 @@ if (!fs.existsSync(uploadsDir)) {
     console.log('📁 Created uploads directory');
 }
 
-// Middleware
- app.use(cors({
-   origin: 'http://localhost:5000'  //to be changed later to vercel url
- }));
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
@@ -56,7 +54,7 @@ connectDB().then(() => {
 
 // Use routes
 app.get('/', (req, res) => {
-  res.send('Hello World')
+    res.send('Hello World')
 });
 app.use('/api/auth', authRoutes);
 app.use('/api/', adminRoutes);
