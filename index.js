@@ -14,6 +14,15 @@ const { createAdminUser } = require('./scripts/createAdmin');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+
+// Middleware
+const allowedOrigins = ['https://gursha-frontend.vercel.app'];
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Adjust as needed
+  credentials: true // Include this if you need to send cookies or authorization headers
+}));
+
 // Create uploads directory if it doesn't exist
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) {
@@ -21,21 +30,12 @@ if (!fs.existsSync(uploadsDir)) {
     console.log('📁 Created uploads directory');
 }
 
-// Middleware
-app.use(cors());
-const cors = require('cors');
-
-app.use(cors());
-
- app.use(cors({
-   origin: 'http://localhost:5000'  //to be changed later to vercel url
- }));
-
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Connect to MongoDB and create admin user
 connectDB().then(() => {
@@ -50,6 +50,9 @@ connectDB().then(() => {
 });
 
 // Use routes
+app.get('/', (req, res) => {
+  res.send('Hello World')
+});
 app.use('/api/auth', authRoutes);
 app.use('/api/', adminRoutes);
 app.use('/api', userRoutes);
@@ -57,7 +60,10 @@ app.use('/api', gameRoutes);
 app.use('/api', participantRoutes);
 app.use('/api', prizeRoutes);
 
+// Export the app as a serverless function
+module.exports = app;
+
 // Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Server is running on http://localhost:${PORT}`);
+// });

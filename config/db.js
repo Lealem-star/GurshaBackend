@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
     try {
         // Check if MONGODB_URI is defined, use fallback for development
-        const mongoUri = process.env.atlas_URL || 'mongodb+srv://meseretlealem8:uIuJQZYOFLHhubMG@cluster0.ysox9oa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+        const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://meseretlealem8:uIuJQZYOFLHhubMG@cluster0.ysox9oa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
         console.log('Attempting to connect to MongoDB...');
         console.log('URI:', mongoUri);
