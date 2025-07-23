@@ -35,6 +35,7 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Connect to MongoDB and create admin user
 connectDB().then(() => {
