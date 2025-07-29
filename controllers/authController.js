@@ -44,10 +44,12 @@ exports.signin = async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    console.log('Signin attempt for username:', username);
+    console.log('🔐 Signin attempt for username:', username);
+    console.log('📝 Request body:', req.body);
+    console.log('🌐 Request origin:', req.get('origin'));
 
     if (!username || !password) {
-      console.log('Missing credentials');
+      console.log('❌ Missing credentials');
       return res.status(400).json({ message: 'Username and password are required.' });
     }
 

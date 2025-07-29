@@ -16,13 +16,25 @@ const PORT = process.env.PORT || 5000;
 
 
 // Middleware
-const allowedOrigins = ['https://gursha-frontend.vercel.app'];
+const allowedOrigins = process.env.NODE_ENV === 'production' 
+    ? ['https://gursha-frontend.vercel.app'] 
+    : ['https://gursha-frontend.vercel.app', 'http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5173', 'http://127.0.0.1:5173'];
+
 app.use(cors({
     origin: allowedOrigins,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['X-CSRF-Token', 'Authorization', 'X-Requested-With', 'Accept', 'Accept-Version', 'Content-Length', 'Content-MD5', 'Content-Type', 'Date', 'X-Api-Version']
 }));
+
+// Handle preflight requests
+app.options('*', cors());
+
+// Add request logging middleware
+app.use((req, res, next) => {
+    console.log(`📨 ${req.method} ${req.path} - Origin: ${req.get('origin') || 'none'}`);
+    next();
+});
 
 // Create uploads directory if it doesn't exist
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -68,6 +80,6 @@ app.use('/api', prizeRoutes);
 module.exports = app;
 
 // Start the server
-// app.listen(PORT, () => {
-//     console.log(`Server is running on http://localhost:${PORT}`);
-// });
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
