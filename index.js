@@ -16,13 +16,49 @@ const PORT = process.env.PORT || 5000;
 
 
 // Middleware
-const allowedOrigins = ['https://gursha-frontend.vercel.app'];
+const allowedOrigins = process.env.NODE_ENV === 'production' 
+    ? ['https://gursha-frontend.vercel.app'] 
+    : ['https://gursha-frontend.vercel.app', 'http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5173', 'http://127.0.0.1:5173'];
+
 app.use(cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            console.log('🚫 CORS blocked origin:', origin);
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['X-CSRF-Token', 'Authorization', 'X-Requested-With', 'Accept', 'Accept-Version', 'Content-Length', 'Content-MD5', 'Content-Type', 'Date', 'X-Api-Version']
 }));
+
+// Handle preflight requests
+app.options('*', cors());
+
+// Add request logging middleware
+app.use((req, res, next) => {
+    console.log(`📨 ${req.method} ${req.path} - Origin: ${req.get('origin') || 'none'}`);
+    next();
+});
+
+// Ensure database connection for each request (important for serverless)
+app.use(async (req, res, next) => {
+    try {
+        await initializeDB();
+        next();
+    } catch (error) {
+        console.error('Database initialization failed:', error);
+        res.status(500).json({ 
+            message: 'Database connection failed',
+            error: process.env.NODE_ENV === 'production' ? 'Internal server error' : error.message 
+        });
+    }
+});
 
 // Create uploads directory if it doesn't exist
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -38,17 +74,26 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 // Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Connect to MongoDB and create admin user
-connectDB().then(() => {
-    // Call the createAdminUser function after DB connection is established
+// Initialize database connection
+let dbConnected = false;
+
+const initializeDB = async () => {
+    if (dbConnected) return;
+    
     try {
-        createAdminUser();
+        await connectDB();
+        // Call the createAdminUser function after DB connection is established
+        await createAdminUser();
+        dbConnected = true;
+        console.log('🚀 Database initialized successfully');
     } catch (error) {
-        console.error('Error creating admin user:', error);
+        console.error('Failed to initialize database:', error);
+        throw error;
     }
-}).catch(error => {
-    console.error('Failed to connect to database:', error);
-});
+};
+
+// Initialize DB for serverless
+initializeDB().catch(console.error);
 
 // Use routes
 app.get('/', (req, res) => {
@@ -61,10 +106,12 @@ app.use('/api', gameRoutes);
 app.use('/api', participantRoutes);
 app.use('/api', prizeRoutes);
 
-// Export the app as a serverless function
+// Export the app as a serverless function for Vercel
 module.exports = app;
 
-// Start the server
-// app.listen(PORT, () => {
-//     console.log(`Server is running on http://localhost:${PORT}`);
-// });
+// Start the server only in development
+if (process.env.NODE_ENV !== 'production' && require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`);
+    });
+}

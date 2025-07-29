@@ -1,0 +1,19 @@
+nohup: ignoring input
+[dotenv@17.0.0] injecting env (3) from .env – 🔐 encrypt with dotenvx: https://dotenvx.com
+Attempting to connect to MongoDB...
+URI: mongodb+srv://meseretlealem8:oCqluaVBJKgTowHM@cluster0.pv9y913.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+Server is running on http://localhost:5000
+✅ MongoDB connected successfully
+Database name: test
+Database host: ac-bkgbvzy-shard-00-00.pv9y913.mongodb.net
+Database port: 27017
+🔍 Checking for existing admin user...
+✅ Admin user already exists. Username: admin
+📨 GET /api/auth/test - Origin: none
+📨 POST /api/auth/signin - Origin: http://localhost:3000
+🔐 Signin attempt for username: admin
+📝 Request body: { username: 'admin', password: 'admin123' }
+🌐 Request origin: http://localhost:3000
+User found, comparing passwords...
+Password match, generating token...
+Login successful for user: admin Role: admin
