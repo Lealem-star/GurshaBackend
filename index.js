@@ -19,8 +19,9 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = ['https://gursha-frontend.vercel.app'];
 app.use(cors({
     origin: allowedOrigins,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Adjust as needed
-    credentials: true // Include this if you need to send cookies or authorization headers
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['X-CSRF-Token', 'Authorization', 'X-Requested-With', 'Accept', 'Accept-Version', 'Content-Length', 'Content-MD5', 'Content-Type', 'Date', 'X-Api-Version']
 }));
 
 // Create uploads directory if it doesn't exist
