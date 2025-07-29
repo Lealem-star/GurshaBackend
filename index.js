@@ -31,8 +31,6 @@ if (!fs.existsSync(uploadsDir)) {
     console.log('📁 Created uploads directory');
 }
 
-app.use(express.static(path.join(__dirname, 'public')));
-
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
