@@ -16,7 +16,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-const allowedOrigins = ['https://gursha-frontend.vercel.app'];
+const allowedOrigins = ['https://gursha-frontend-pl37vsgbv-meseretlealem8-2171s-projects.vercel.app/'];
 app.use(cors({
     origin: allowedOrigins,
     credentials: true,
