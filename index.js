@@ -16,7 +16,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-const allowedOrigins = ['https://gursha-frontend-pl37vsgbv-meseretlealem8-2171s-projects.vercel.app/'];
+const allowedOrigins = ['https://gurshafrontendservices.onrender.com'];
 app.use(cors({
     origin: allowedOrigins,
     credentials: true,
@@ -61,7 +61,7 @@ app.use('/api', participantRoutes); // Changed to /api/participants
 app.use('/api/prizes', prizeRoutes); // Changed to /api/prizes
 
 // Export the app as a serverless function
-module.exports = app;
+// module.exports = app;
 
 // Start the server only if running locally (not in serverless)
 if (require.main === module) {
